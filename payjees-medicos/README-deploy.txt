@@ -1,0 +1,1 @@
+Payjees Medicos is deployed from the payjees-medicos branch and payjees-medicos folder. Render should publish that folder directly as a static site.
