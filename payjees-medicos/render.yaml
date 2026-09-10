@@ -1,0 +1,6 @@
+services:
+  - type: web
+    runtime: static
+    name: payjees-medicos
+    buildCommand: echo "Static site - no build required"
+    staticPublishPath: ./payjees-medicos
