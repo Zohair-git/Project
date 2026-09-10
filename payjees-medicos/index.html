@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f766e" />
+  <meta name="description" content="Payjees Medicos medicine demand and ordering list" />
+  <title>Payjees Medicos | Medicine Order List</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-wrap">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64" role="img"><rect x="25" y="8" width="14" height="48" rx="4"></rect><rect x="8" y="25" width="48" height="14" rx="4"></rect></svg>
+      </div>
+      <div>
+        <h1>Payjees Medicos</h1>
+        <p>Medicine Demand Book</p>
+      </div>
+    </div>
+    <button id="installBtn" class="ghost-btn hidden" type="button">Install App</button>
+  </header>
+
+  <main class="shell">
+    <section class="hero-card">
+      <div>
+        <p class="eyebrow">Today</p>
+        <h2 id="todayLabel">Medicine Order List</h2>
+        <p class="muted">Out of stock? Type the medicine name or tap the mic and say it.</p>
+      </div>
+      <div class="stats" aria-label="Today totals">
+        <div><strong id="itemCount">0</strong><span>Items</span></div>
+        <div><strong id="qtyCount">0</strong><span>Total Qty</span></div>
+      </div>
+    </section>
+
+    <section class="entry-card">
+      <label for="medicineInput">Medicine name</label>
+      <div class="medicine-row">
+        <div class="input-wrap">
+          <input id="medicineInput" autocomplete="off" placeholder="e.g. Panadol Extra" maxlength="100" />
+          <div id="suggestions" class="suggestions hidden" role="listbox"></div>
+        </div>
+        <button id="voiceBtn" class="mic-btn" type="button" aria-label="Add medicine by voice" title="Speak medicine name">🎤</button>
+      </div>
+
+      <div class="entry-bottom">
+        <div class="qty-picker" aria-label="Quantity">
+          <button id="minusQty" type="button">−</button>
+          <input id="qtyInput" type="number" inputmode="numeric" min="1" max="999" value="1" aria-label="Quantity" />
+          <button id="plusQty" type="button">+</button>
+        </div>
+        <button id="addBtn" class="primary-btn" type="button">+ Add Medicine</button>
+      </div>
+      <p id="voiceStatus" class="status-line" aria-live="polite"></p>
+    </section>
+
+    <nav class="tabs" aria-label="Main views">
+      <button class="tab active" data-view="today" type="button">Today</button>
+      <button class="tab" data-view="history" type="button">Previous Orders</button>
+      <button class="tab" data-view="backup" type="button">Backup</button>
+    </nav>
+
+    <section id="todayView" class="view active-view">
+      <div class="section-head">
+        <div>
+          <h3>Today's Medicines</h3>
+          <p class="muted">Tap quantity buttons to change, or mark an item ordered.</p>
+        </div>
+        <button id="clearTodayBtn" class="text-btn danger" type="button">Clear today</button>
+      </div>
+      <div id="todayList" class="list"></div>
+      <div id="emptyToday" class="empty-state">
+        <div class="empty-icon">💊</div>
+        <h4>No medicines added yet</h4>
+        <p>Add the first unavailable medicine above.</p>
+      </div>
+
+      <div class="actions-grid">
+        <button id="pdfBtn" class="action-card" type="button"><span>📄</span><strong>Download PDF</strong><small>Branded order sheet</small></button>
+        <button id="whatsappBtn" class="action-card" type="button"><span>📱</span><strong>WhatsApp Order</strong><small>Send list to supplier</small></button>
+        <button id="copyBtn" class="action-card" type="button"><span>📋</span><strong>Copy Order</strong><small>Copy as plain text</small></button>
+      </div>
+    </section>
+
+    <section id="historyView" class="view">
+      <div class="section-head history-head">
+        <div>
+          <h3>Previous Orders</h3>
+          <p class="muted">Select a date to open its medicine list.</p>
+        </div>
+        <input id="historyDate" type="date" />
+      </div>
+      <div id="historyList" class="list"></div>
+      <div id="emptyHistory" class="empty-state">
+        <div class="empty-icon">🗓️</div>
+        <h4>No medicines on this date</h4>
+        <p>Choose another date from above.</p>
+      </div>
+      <div class="history-actions">
+        <button id="historyPdfBtn" class="secondary-btn" type="button">📄 Download Selected Date PDF</button>
+      </div>
+    </section>
+
+    <section id="backupView" class="view">
+      <div class="backup-card">
+        <h3>Backup & Restore</h3>
+        <p>This first version stores data on this device so it remains fast and works offline. Export a backup occasionally.</p>
+        <div class="backup-actions">
+          <button id="exportBtn" class="secondary-btn" type="button">⬇ Export Backup</button>
+          <label class="secondary-btn file-label" for="importFile">⬆ Import Backup</label>
+          <input id="importFile" type="file" accept="application/json" hidden />
+        </div>
+        <p class="hint">Cloud sync can be added in the next version without changing the user interface.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <footer>
+    <span>Payjees Medicos</span>
+    <span>•</span>
+    <span>Simple medicine ordering</span>
+  </footer>
+</body>
+</html>
